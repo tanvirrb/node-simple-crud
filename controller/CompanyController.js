@@ -21,12 +21,11 @@ module.exports = {
 //Create an Company
     Create: function (req, res) {
 
-        req.body.logo = req.file.path;
-        // var data = {
-        //     name: req.body.name,
-        //     type: req.body.type,
-        //     logo: req.file.path
-        // };
+        req.body.logo = req.files[0].path;
+        req.body.avatar = req.files[1].path;
+        var file = req.files;
+        console.log(file);
+
         Companies.create(req.body, function (err, company) {
             console.log(req.body);
             if(err)

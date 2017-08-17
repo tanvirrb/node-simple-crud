@@ -18,7 +18,7 @@ var upload = multer({ storage: storage });
 
 router.route('/companies').get(Animals.getAll);
 router.route('/companies/:_id').get(Animals.get);
-router.route('/companies').post(upload.single('logo'), Animals.Create);
+router.route('/companies').post(upload.array('logo', 2), Animals.Create);
 router.route('/companies/:_id').put(Animals.Update);
 router.route('/companies/:_id').delete(Animals.Delete);
 

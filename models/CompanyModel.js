@@ -8,6 +8,7 @@ var companySchema = new Schema({
     name: String,
     type: String,
     logo: String,
+    avatar: String,
     created_at: String
 
 });
