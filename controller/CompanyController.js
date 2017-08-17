@@ -21,8 +21,8 @@ module.exports = {
 //Create an Company
     Create: function (req, res) {
 
-        req.body.logo = req.files[0].path;
-        req.body.avatar = req.files[1].path;
+        req.body.logo = req.files.logo[0].path;
+        req.body.avatar = req.files.avatar[0].path;
         var file = req.files;
         console.log(file);
 
