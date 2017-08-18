@@ -4,11 +4,10 @@ const Schema = mongoose.Schema;
 mongoose.connect('mongodb://localhost/businesses');
 
 // create a schema
-var companySchema = new Schema({
+let companySchema = new Schema({
     name: String,
     type: String,
     logo: String,
-    avatar: String,
     created_at: String
 
 });
@@ -23,7 +22,7 @@ companySchema.statics = {
     },
 
     create: function (data, callback) {
-        var company = new this(data);
+        let company = new this(data);
         company.save(callback);
     },
 
@@ -38,7 +37,7 @@ companySchema.statics = {
 
 // the schema is useless so far
 // we need to create a model using it
-var Company = mongoose.model('companyCollection', companySchema);
+let Company = mongoose.model('companyCollection', companySchema);
 
 // make this available to our users in our Node applications
 module.exports = Company;

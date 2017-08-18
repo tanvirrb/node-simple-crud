@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Animals = require('../controller/CompanyController');
 const multer  = require('multer');
-const gm = require('gm').subClass({imageMagick: true});
 const path = require('path');
 
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/images/logos');
     },
@@ -14,14 +13,11 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({ storage: storage });
+let upload = multer({ storage: storage });
 
 router.route('/companies').get(Animals.getAll);
 router.route('/companies/:_id').get(Animals.get);
-router.route('/companies').post(upload.fields([
-    { name: 'logo', maxCount: 1 },
-    { name: 'avatar', maxCount: 1 }
-]), Animals.Create);
+router.route('/companies').post(upload.fields([{ name: 'logo', maxCount: 1 }]), Animals.Create);
 router.route('/companies/:_id').put(Animals.Update);
 router.route('/companies/:_id').delete(Animals.Delete);
 

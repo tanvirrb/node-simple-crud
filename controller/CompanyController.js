@@ -1,4 +1,7 @@
 const Companies = require('../models/CompanyModel');
+const fs = require('fs');
+const gm = require('gm');
+const path = require('path');
 
 module.exports = {
     //Find all Companies
@@ -21,10 +24,22 @@ module.exports = {
 //Create an Company
     Create: function (req, res) {
 
-        req.body.logo = req.files.logo[0].path;
-        req.body.avatar = req.files.avatar[0].path;
-        var file = req.files;
-        console.log(file);
+        let height = 250;
+        let width = 250;
+        let original_image_path = req.files.logo[0].path;
+        let logo_path_prefix = './public/images/logos/thumb/';
+        let logo_path = logo_path_prefix + req.files.logo[0].fieldname + '-' + Date.now() + path.extname(req.files.logo[0].filename);
+
+        gm(original_image_path)
+            .resize(width, height, '!')
+            .noProfile()
+            .write(logo_path, function (err) {
+                if(err)
+                    throw err;
+            });
+
+        req.body.logo = logo_path;
+        //req.body.avatar = req.files.avatar[0].path;
 
         Companies.create(req.body, function (err, company) {
             console.log(req.body);
