@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const gm = require('gm');
 const Schema = mongoose.Schema;
 
 mongoose.connect('mongodb://localhost/businesses');
@@ -32,6 +33,32 @@ companySchema.statics = {
 
     removeById: function (id, callback) {
         this.remove(id, callback);
+    },
+    resizeImage: function (original_image_path, logo_path, callback) {
+        let height = 250;
+        let width = 250;
+
+        gm(original_image_path)
+            .resize(width, height, '!')
+            .noProfile()
+            .write(logo_path, function (err) {
+                if(err)
+                    throw err;
+            });
+        callback();
+    },
+    resizeImage: function (original_image_path, logo_path, callback) {
+        let height = 250;
+        let width = 250;
+
+        gm(original_image_path)
+            .resize(width, height, '!')
+            .noProfile()
+            .write(logo_path, function (err) {
+                if(err)
+                    throw err;
+            });
+        callback();
     }
 };
 

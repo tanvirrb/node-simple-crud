@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Animals = require('../controller/CompanyController');
+const Company = require('../controller/CompanyController');
 const multer  = require('multer');
 const path = require('path');
 
@@ -13,12 +13,12 @@ let storage = multer.diskStorage({
     }
 });
 
-let upload = multer({ storage: storage });
+let upload = multer({ storage: storage }).any();
 
-router.route('/companies').get(Animals.getAll);
-router.route('/companies/:_id').get(Animals.get);
-router.route('/companies').post(upload.fields([{ name: 'logo', maxCount: 1 }]), Animals.Create);
-router.route('/companies/:_id').put(Animals.Update);
-router.route('/companies/:_id').delete(Animals.Delete);
+router.route('/companies').get(Company.getAll);
+router.route('/companies/:_id').get(Company.get);
+router.route('/companies').post(upload, Company.Create);
+router.route('/companies/:_id').put(Company.Update);
+router.route('/companies/:_id').delete(Company.Delete);
 
 module.exports = router;

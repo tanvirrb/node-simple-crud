@@ -1,6 +1,4 @@
 const Companies = require('../models/CompanyModel');
-const fs = require('fs');
-const gm = require('gm');
 const path = require('path');
 
 module.exports = {
@@ -21,28 +19,25 @@ module.exports = {
             res.json(company);
         })
     },
+
 //Create an Company
     Create: function (req, res) {
 
-        let height = 250;
-        let width = 250;
-        let original_image_path = req.files.logo[0].path;
-        let logo_path_prefix = './public/images/logos/thumb/';
-        let logo_path = logo_path_prefix + req.files.logo[0].fieldname + '-' + Date.now() + path.extname(req.files.logo[0].filename);
+        if(req.files[0]){
+            let original_image_path = req.files[0].path;
+            let logo_path = req.files[0].destination + '/thumb/' + req.files[0].fieldname + '-' + Date.now() + path.extname(req.files[0].filename);
 
-        gm(original_image_path)
-            .resize(width, height, '!')
-            .noProfile()
-            .write(logo_path, function (err) {
+            Companies.resizeImage(original_image_path, logo_path, function (err) {
                 if(err)
                     throw err;
+                console.log('image resized');
             });
 
-        req.body.logo = logo_path;
-        //req.body.avatar = req.files.avatar[0].path;
+            req.body.logo = logo_path;
+        }
+        console.log(req.body);
 
         Companies.create(req.body, function (err, company) {
-            console.log(req.body);
             if(err)
                 return res.send(err);
             res.json(company);
@@ -74,6 +69,7 @@ module.exports = {
             if(count<1){
                 return res.json({message: 'Company not found'});
             }
+
             Companies.removeById({_id: req.params._id}, function(err, company) {
                 if (err)
                     return res.send(err);
