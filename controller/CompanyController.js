@@ -23,19 +23,20 @@ module.exports = {
 //Create an Company
     Create: function (req, res) {
 
+        //check if there is any file with the request
         if(req.files[0]){
+            console.log(req.files);
             let original_image_path = req.files[0].path;
             let logo_path = req.files[0].destination + '/thumb/' + req.files[0].fieldname + '-' + Date.now() + path.extname(req.files[0].filename);
 
+            //resize image with gm
             Companies.resizeImage(original_image_path, logo_path, function (err) {
                 if(err)
                     throw err;
                 console.log('image resized');
             });
-
             req.body.logo = logo_path;
         }
-        console.log(req.body);
 
         Companies.create(req.body, function (err, company) {
             if(err)

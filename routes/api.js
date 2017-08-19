@@ -13,7 +13,7 @@ let storage = multer.diskStorage({
     }
 });
 
-let upload = multer({ storage: storage }).any();
+let upload = multer({ storage: storage }).array('logo', 1);
 
 router.route('/companies').get(Company.getAll);
 router.route('/companies/:_id').get(Company.get);
