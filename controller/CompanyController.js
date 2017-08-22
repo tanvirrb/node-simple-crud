@@ -35,7 +35,7 @@ module.exports = {
                     throw err;
                 console.log('image resized');
             });
-            req.body.logo = logo_path;
+            req.body.logo = req.files[0].filename;
         }
 
         Companies.create(req.body, function (err, company) {
