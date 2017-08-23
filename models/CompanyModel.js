@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const gm = require('gm');
+const fs = require('fs');
 const Schema = mongoose.Schema;
 
 mongoose.connect('mongodb://localhost/businesses');
@@ -9,6 +10,7 @@ let companySchema = new Schema({
     name: String,
     type: String,
     logo: String,
+    logo_path: String,
     created_at: String
 
 });
@@ -57,6 +59,11 @@ companySchema.statics = {
             .write(logo_path, function (err) {
                 if(err)
                     throw err;
+                // fs.unlink(original_image_path, function (err) {
+                //     if(err)
+                //         throw err;
+                //     console.log('Original image deleted after resize');
+                // });
             });
         callback();
     }
