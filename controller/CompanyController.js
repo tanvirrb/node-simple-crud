@@ -90,13 +90,24 @@ module.exports = {
             if(count<1){
                 return res.status(404).json({message: 'Company not found'});
             }
-
-            Companies.removeById({_id: req.params._id}, function(err, company) {
-                if (err)
+            Companies.get({_id: req.params._id}, function (err, company) {
+                if(err)
                     return res.status(400).json(err);
 
-                res.status(200).json({message: 'Company deleted'});
+                Companies.deleteImage(company.logo_path + company.logo, function (err) {
+                    if(err)
+                        return err;
+                    console.log('Image deleted');
+
+                    Companies.removeById({_id: req.params._id}, function(err, company) {
+                        if (err)
+                            return res.status(400).json(err);
+
+                        res.status(200).json({message: 'Company deleted'});
+                    });
+                })
             });
+
 
         });
     }
