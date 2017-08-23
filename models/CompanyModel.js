@@ -36,6 +36,7 @@ companySchema.statics = {
     removeById: function (id, callback) {
         this.remove(id, callback);
     },
+
     resizeImage: function (original_image_path, logo_path, callback) {
         let height = 250;
         let width = 250;
@@ -45,25 +46,14 @@ companySchema.statics = {
             .noProfile()
             .write(logo_path, function (err) {
                 if(err)
-                    throw err;
-            });
-        callback();
-    },
-    resizeImage: function (original_image_path, logo_path, callback) {
-        let height = 250;
-        let width = 250;
+                    return res.status(400).json(err);
 
-        gm(original_image_path)
-            .resize(width, height, '!')
-            .noProfile()
-            .write(logo_path, function (err) {
-                if(err)
-                    throw err;
-                // fs.unlink(original_image_path, function (err) {
-                //     if(err)
-                //         throw err;
-                //     console.log('Original image deleted after resize');
-                // });
+                fs.unlink(original_image_path, function () {
+                    if(err)
+                        return res.status(400).json(err);
+
+                    console.log('Original image deleted after resize');
+                });
             });
         callback();
     }

@@ -34,18 +34,20 @@ module.exports = {
 
         //check if there is any file with the request
         if(req.files[0]){
-            console.log(req.files);
-            let original_image_path = req.files[0].path;
-            let logo_path = req.files[0].destination + '/thumb/' + req.files[0].fieldname + '-' + Date.now() + path.extname(req.files[0].filename);
 
+            let original_image_path = req.files[0].path;
+            let logo_path = req.files[0].destination + '/thumb/' + req.files[0].filename;
+
+            //console.log(original_image_path);
             //resize image with gm
             Companies.resizeImage(original_image_path, logo_path, function (err) {
                 if(err)
-                    return res.status(400).json({message: 'Error! Something went wrong!'});
+                    return res.status(400).json(err);
                 console.log('image resized');
             });
+
             req.body.logo = req.files[0].filename;
-            req.body.logo_path = req.files[0].destination + '/';
+            req.body.logo_path = req.files[0].destination + '/thumb/';
         }
 
         Companies.create(req.body, function (err, company) {
