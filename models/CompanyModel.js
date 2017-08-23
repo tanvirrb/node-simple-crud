@@ -46,16 +46,12 @@ companySchema.statics = {
             .noProfile()
             .write(logo_path, function (err) {
                 if(err)
-                    return res.status(400).json(err);
-
-                fs.unlink(original_image_path, function () {
-                    if(err)
-                        return res.status(400).json(err);
-
-                    console.log('Original image deleted after resize');
-                });
+                    return err;
+                callback();
             });
-        callback();
+    },
+    deleteImage: function (image_path, callback) {
+        fs.unlink(image_path, callback);
     }
 };
 

@@ -38,12 +38,18 @@ module.exports = {
             let original_image_path = req.files[0].path;
             let logo_path = req.files[0].destination + '/thumb/' + req.files[0].filename;
 
-            //console.log(original_image_path);
+
             //resize image with gm
             Companies.resizeImage(original_image_path, logo_path, function (err) {
                 if(err)
                     return res.status(400).json(err);
                 console.log('image resized');
+
+                Companies.deleteImage(original_image_path, function (err) {
+                    if(err)
+                        return res.status(400).json(err);
+                    console.log('Image deleted');
+                });
             });
 
             req.body.logo = req.files[0].filename;
