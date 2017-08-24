@@ -1,6 +1,4 @@
 const Companies = require('../models/CompanyModel');
-const path = require('path');
-const fs = require('fs');
 
 module.exports = {
     //Find all Companies
@@ -37,7 +35,6 @@ module.exports = {
 
             let original_image_path = req.files[0].path;
             let logo_path = req.files[0].destination + '/thumb/' + req.files[0].filename;
-
 
             //resize image with gm
             Companies.resizeImage(original_image_path, logo_path, function (err) {
@@ -107,8 +104,6 @@ module.exports = {
                     });
                 })
             });
-
-
         });
     }
 };
