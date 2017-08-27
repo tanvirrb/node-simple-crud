@@ -18,7 +18,7 @@ let upload = multer({ storage: storage }).array('logo', 1);
 router.route('/companies').get(Company.getAll);
 router.route('/companies/:_id').get(Company.get);
 router.route('/companies').post(upload, Company.Create);
-router.route('/companies/:_id').put(Company.Update);
+router.route('/companies/:_id').put(upload, Company.Update);
 router.route('/companies/:_id').delete(Company.Delete);
 
 module.exports = router;
