@@ -131,18 +131,21 @@ module.exports = {
                 if(err)
                     return res.status(400).json(err);
 
-                Companies.deleteImage(company.logo_path + company.logo, function (err) {
-                    if(err)
-                        return err;
-                    console.log('Image deleted');
+                let logo_path = company.logo_path + company.logo;
 
-                    Companies.removeById({_id: req.params._id}, function(err, company) {
-                        if (err)
-                            return res.status(400).json(err);
-
-                        res.status(200).json({message: 'Company deleted'});
+                if(fs.existsSync(logo_path)){
+                    Companies.deleteImage(logo_path, function (err) {
+                        if(err)
+                            return err;
+                        console.log('Image deleted');
                     });
-                })
+                }
+                Companies.removeById({_id: req.params._id}, function(err, company) {
+                    if (err)
+                        return res.status(400).json(err);
+
+                    res.status(200).json({message: 'Company deleted'});
+                });
             });
         });
     }
