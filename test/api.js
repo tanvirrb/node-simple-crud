@@ -4,6 +4,7 @@ let chaiHttp = require('chai-http');
 let server = require('../app');
 let Company = require('../models/CompanyModel');
 let should = chai.should();
+let fs = require('fs');
 
 chai.use(chaiHttp);
 
@@ -78,11 +79,12 @@ describe('Test Company RESTful API', function() {
 
     });
 
-    it('should create a company WITHOUT LOGO FILE on /api/companies POST', function (done) {
+    it('should create a company on /api/companies POST', function (done) {
         chai.request(server)
             .post('/api/companies')
             .field('name', 'Yahoo')
             .field('type', 'News')
+            .attach('logo', fs.readFileSync('./test/image/pp.jpg'), 'logo.jpg')
             .end(function (err, res) {
                 //console.log(res);
                 res.should.have.status(200);
@@ -93,7 +95,10 @@ describe('Test Company RESTful API', function() {
                 res.body.name.should.equal('Yahoo');
                 res.body.should.have.property('type');
                 res.body.type.should.equal('News');
-                res.body.should.not.have.property('logo');
+                res.body.should.have.property('logo');
+                res.body.should.have.property('logo_path');
+                res.body.logo_path.should.be.a('string');
+                res.body.logo_path.should.equal('public/images/logos/thumb/');
                 done();
             });
     });
