@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const gm = require('gm');
 const fs = require('fs');
+const config = require('../_config');
+mongoose.Promise = require('bluebird');
 const Schema = mongoose.Schema;
+console.log(process.env.NODE_ENV);
 
-mongoose.connect('mongodb://localhost/businesses');
+mongoose.connection.openUri(config.mongoURI[process.env.NODE_ENV]);
 
 // create a schema
 let companySchema = new Schema({
